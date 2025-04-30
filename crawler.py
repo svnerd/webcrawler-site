@@ -1,5 +1,8 @@
+import os
 import json
 from datetime import datetime
+
+DATA_FILE = os.path.join(os.path.dirname(__file__), 'data.json')
 
 def fetch_data():
     return {
@@ -10,5 +13,6 @@ def fetch_data():
 
 if __name__ == "__main__":
     data = fetch_data()
-    with open("data.json", "w") as f:
+    with open(DATA_FILE, "w") as f:
         json.dump(data, f)
+
