@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: webcrawler-site
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app:app
+
+  - type: cron
+    name: crawler-job
+    env: python
+    schedule: "@hourly"
+    command: python crawler.py
