@@ -4,7 +4,7 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), 'data.json')
+DATA_FILE = os.path.join("/debug/webcrawler", 'data.json')
 
 # Create a default file if it doesn't exist
 if not os.path.exists(DATA_FILE):
