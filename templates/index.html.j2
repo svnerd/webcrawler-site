@@ -87,7 +87,7 @@
             <h2>Latest News & Conversation</h2>
             <ul>
             {% for file in news_pages %}
-                <li><a href="{{ file }}">{{ file.replace('.html', '') }}</a></li>
+                <li><a href="pages/{{ file }}">{{ file.replace('.html', '') }}</a></li>
             {% endfor %}
             </ul>
         </section>
