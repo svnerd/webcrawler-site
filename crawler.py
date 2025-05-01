@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import requests
 from datetime import datetime
@@ -119,4 +120,9 @@ if __name__ == "__main__":
     if not api_key:
         raise EnvironmentError("Missing OPENAI_API_KEY")
     setup_directories()
-    crawl(api_key)
+
+    while True:
+        print("🕷 Starting daily crawl...")
+        crawl(api_key)
+        print("✅ Finished crawling. Sleeping for 24 hours...")
+        time.sleep(60 * 60 * 24)  # 24 hours = 86400 seconds
