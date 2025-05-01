@@ -1,0 +1,18 @@
+# Python cache and venv
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Render / local data
+/mnt/data/
+/data/json/
+/data/mp3/
+/data/pages/
+/*.mp3
+/*.json
+/*.html
+
+# VS Code settings
+.vscode/
+

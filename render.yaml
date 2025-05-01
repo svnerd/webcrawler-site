@@ -1,12 +1,17 @@
 services:
   - type: web
-    name: webcrawler-site
+    name: kotobax-web
     env: python
     buildCommand: ""
     startCommand: gunicorn app:app
+    disk:
+      name: kotobax-disk
+      mountPath: /debug
 
-  - type: cron
-    name: crawler-job
+  - type: worker
+    name: kotobax-crawler
     env: python
-    schedule: "@hourly"
-    command: python crawler.py
+    startCommand: python crawler.py
+    disk:
+      name: kotobax-disk
+      mountPath: /debug

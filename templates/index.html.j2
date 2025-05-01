@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>KotobaX</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            color: #222;
+        }
+        header {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .logo span.jp {
+            font-size: 0.6em;
+            margin-left: 8px;
+            color: #aaa;
+        }
+        nav a {
+            color: #00f0ff;
+            margin-left: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #ffffff;
+        }
+        main {
+            padding: 40px;
+        }
+        section {
+            margin-bottom: 50px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        h2 {
+            border-bottom: 2px solid #00f0ff;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            margin: 10px 0;
+        }
+        ul li a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">KotobaX <span class="jp">言葉X</span></div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#service">Service</a>
+        </nav>
+    </header>
+    <main>
+        <section id="about">
+            <h2>About</h2>
+            <p><strong>KotobaX</strong> is an AI-powered Japanese language learning platform that brings you the latest simplified news, natural conversations, and voice support to help you learn in context.</p>
+        </section>
+
+        <section id="service">
+            <h2>Latest News & Conversation</h2>
+            <ul>
+            {% for file in news_pages %}
+                <li><a href="{{ file }}">{{ file.replace('.html', '') }}</a></li>
+            {% endfor %}
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
