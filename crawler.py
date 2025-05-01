@@ -114,15 +114,23 @@ def crawl(api_key):
                     return
     generate_index()
 
-if __name__ == "__main__":
+def run_crawler():
+    """
+    Run the crawler in a loop.
+    """
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise EnvironmentError("Missing OPENAI_API_KEY")
     setup_directories()
-
     while True:
         print("🕷 Starting daily crawl...")
         crawl(api_key)
         print("✅ Finished crawling. Sleeping for 24 hours...")
-        time.sleep(60 * 60 * 24)  # 24 hours = 86400 seconds
+        time.sleep(60 * 60 * 24)
+        # 24 hours = 86400 seconds
+        
+
+
+if __name__ == "__main__":
+    run_crawler()
