@@ -8,6 +8,7 @@ DATA_FILE = os.path.join("/debug/webcrawler", 'data.json')
 
 # Create a default file if it doesn't exist
 if not os.path.exists(DATA_FILE):
+    os.makedirs("/debug/webcrawler", exist_ok=True)
     with open(DATA_FILE, "w") as f:
         json.dump({
             "title": "Waiting for first crawl...",
