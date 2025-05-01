@@ -84,7 +84,10 @@ def process_news_item(item, date, api_key):
         synthesize_mp3(text, news_mp3_path, api_key)
         synthesize_mp3(convo_text, conv_mp3_path, api_key)
         # Save HTML
-        generate_news_convo_html(text, convo_text, news_mp3_path, conv_mp3_path, html_path)
+        generate_news_convo_html(
+            text, convo_text, 
+            f"{base_name}_news.mp3", f"{base_name}_conv.mp3",
+            html_path)
         print(f"✅ Processed: {base_name}")
         return True
     except Exception as e:

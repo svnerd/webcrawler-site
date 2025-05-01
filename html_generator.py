@@ -44,13 +44,13 @@ def generate_news_convo_html(news_text, convo_text, news_mp3, convo_mp3, output_
     <div class="section">
         <h1>📰 ニュース</h1>
         <p>{news_html}</p>
-        <a class="audio-link" href="{news_mp3}" target="_blank">🔊 ニュース音声を聞く (MP3)</a>
+        <a class="audio-link" href="mp3/{news_mp3}" target="_blank">🔊 ニュース音声を聞く (MP3)</a>
     </div>
 
     <div class="section">
         <h1>💬 会話</h1>
         <p>{convo_html}</p>
-        <a class="audio-link" href="{convo_mp3}" target="_blank">🔊 会話音声を聞く (MP3)</a>
+        <a class="audio-link" href="mp3/{convo_mp3}" target="_blank">🔊 会話音声を聞く (MP3)</a>
     </div>
 
 </body>
