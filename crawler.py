@@ -6,8 +6,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from const import BASE_URL, NEWS_LIST_URL, JSON_DIR, MP3_DIR, PAGE_DIR, MAX_ARTICLES
-from generator import generate_index
-from html_generator import generate_news_convo_html
+from generator import generate_index, generate_latest_json
 from openai_generator import synthesize_mp3, construct_conversation
 
 
@@ -45,7 +44,7 @@ def extract_article_text(news_id):
     return article_text
 
 
-def process_news_item(item, date, api_key):
+def process_news_item(item, date, api_key) -> dict:
     """
     Process a single news item.
     """
@@ -57,19 +56,21 @@ def process_news_item(item, date, api_key):
     json_path = os.path.join(JSON_DIR, f"{base_name}.json")
     news_mp3_path = os.path.join(MP3_DIR, f"{base_name}_news.mp3")
     conv_mp3_path = os.path.join(MP3_DIR, f"{base_name}_conv.mp3")
-    html_path = os.path.join(PAGE_DIR, f"{base_name}.html")
 
     # Skip if all files already exist
-    for path in [json_path, news_mp3_path, conv_mp3_path, html_path]:
-        if os.path.exists(path):
-            print(f"⚠️ Skipping {base_name}, already exists.")
-            return True
+    if os.path.exists(json_path):
+        with open(json_path, "r", encoding="utf-8") as f:
+            json_data = json.load(f)
+        print(f"⚠️ Skipping {base_name}, already exists.")
+        return json_data
         
     try:
         text = extract_article_text(news_id)
         convo_text = construct_conversation(text, api_key)
-
+        synthesize_mp3(text, news_mp3_path, api_key)
+        synthesize_mp3(convo_text, conv_mp3_path, api_key)
         article_data = {
+            'base_name': base_name,
             "title": title,
             "id": news_id,
             "date": date,
@@ -81,18 +82,11 @@ def process_news_item(item, date, api_key):
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(article_data, f, ensure_ascii=False, indent=2)
         # Generate MP3
-        synthesize_mp3(text, news_mp3_path, api_key)
-        synthesize_mp3(convo_text, conv_mp3_path, api_key)
-        # Save HTML
-        generate_news_convo_html(
-            text, convo_text, 
-            f"{base_name}_news.mp3", f"{base_name}_conv.mp3",
-            html_path)
         print(f"✅ Processed: {base_name}")
-        return True
+        return article_data
     except Exception as e:
         print(f"❌ Error processing {news_id}: {e}")
-        return False
+        return None
 
 def crawl(api_key):
     """
@@ -107,15 +101,19 @@ def crawl(api_key):
         print(f"Failed to fetch news list: {e}")
         return
 
-    count = 0
+    json_data_list = []
     for date, items in sorted(all_news.items(), reverse=True):
         for item in items:
-            if process_news_item(item, date, api_key):
-                count += 1
-                if count >= MAX_ARTICLES:
-                    generate_index()
-                    return
-    generate_index()
+            json_item = process_news_item(item, date, api_key)
+            if json_item is not None:
+                json_data_list.append(json_item)
+            else:
+                print(f"❌ Failed to process {item}")
+            if len(json_data_list) >= MAX_ARTICLES:
+                break
+    generate_index(json_data_list)
+    generate_latest_json(json_data_list)
+    print("✅ Finished generating index and latest.json")
 
 def run_crawler():
     """
