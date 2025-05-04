@@ -111,6 +111,8 @@ def crawl(api_key):
                 print(f"❌ Failed to process {item}")
             if len(json_data_list) >= MAX_ARTICLES:
                 break
+        if len(json_data_list) >= MAX_ARTICLES:
+            break
     generate_index(json_data_list)
     generate_latest_json(json_data_list)
     print("✅ Finished generating index and latest.json")
