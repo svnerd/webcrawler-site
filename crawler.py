@@ -73,7 +73,7 @@ def process_news_item(item, date, api_key) -> dict:
         convo_text = construct_conversation(text, api_key)
         synthesize_mp3(text, news_mp3_path, api_key)
 
-        generate_anki_from_text(text, api_key, )
+        generate_anki_from_text(text, api_key, jp_en_csv, en_jp_csv)
         article_data = {
             'base_name': base_name,
             "title": title,
