@@ -82,6 +82,8 @@ def process_news_item(item, date, api_key) -> dict:
             "url": f"{BASE_URL}/{news_id}/{news_id}.html",
             "text": text,
             "convo_text": convo_text,
+            'jp_en_csv': jp_en_csv,
+            'en_jp_csv': en_jp_csv,
         }
         
         # Save JSON

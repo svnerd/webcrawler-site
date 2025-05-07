@@ -13,11 +13,14 @@ def generate_html_from_json(json_data):
     text = json_data["text"]
     convo_text = json_data["convo_text"]
     news_link = json_data["url"]
+    anki_csv_jp_en = json_data["jp_en_csv"]
+    anki_csv_en_jp = json_data["en_jp_csv"]
     # Save HTML
     generate_news_convo_html_mobile_friendly(
         text, convo_text, 
         f"{base_name}_news.mp3",
-        html_path, top_link=news_link)
+        anki_csv_jp_en, anki_csv_en_jp,
+        output_path=html_path, top_link=news_link)
     return html_path
 
 def generate_latest_json(json_data_list):
