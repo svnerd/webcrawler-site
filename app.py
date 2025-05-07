@@ -32,7 +32,7 @@ def serve_latest_json():
 
 # maybe later will expose latest_en_jp.csv and latest_jp_en.csv for anki.
 @app.route("/api/latest.html")
-def serve_latest_json():
+def serve_latest_html():
     return send_from_directory(LATEST_DIR, "latest.html")
 
 # Start crawler in background thread
