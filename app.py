@@ -1,5 +1,5 @@
 from flask import Flask, send_from_directory
-from const import PAGE_DIR, MP3_DIR, LATEST_JSON_DIR
+from const import PAGE_DIR, MP3_DIR, LATEST_DIR
 from crawler import run_crawler
 
 import threading
@@ -28,7 +28,12 @@ def serve_mp3(filename):
 
 @app.route("/api/latest.json")
 def serve_latest_json():
-    return send_from_directory(LATEST_JSON_DIR, "latest.json")
+    return send_from_directory(LATEST_DIR, "latest.json")
+
+# maybe later will expose latest_en_jp.csv and latest_jp_en.csv for anki.
+@app.route("/api/latest.html")
+def serve_latest_json():
+    return send_from_directory(LATEST_DIR, "latest.html")
 
 # Start crawler in background thread
 threading.Thread(target=run_crawler, daemon=True).start()

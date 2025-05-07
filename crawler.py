@@ -5,9 +5,12 @@ import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from const import BASE_URL, NEWS_LIST_URL, JSON_DIR, MP3_DIR, PAGE_DIR, MAX_ARTICLES
+from const import (
+    BASE_URL, NEWS_LIST_URL, JSON_DIR, MP3_DIR, 
+    PAGE_DIR, MAX_ARTICLES, ANKI_DIR
+)
 from generator import generate_index, generate_latest_json
-from openai_generator import synthesize_mp3, construct_conversation
+from openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
 
 
 def setup_directories():
@@ -55,7 +58,8 @@ def process_news_item(item, date, api_key) -> dict:
 
     json_path = os.path.join(JSON_DIR, f"{base_name}.json")
     news_mp3_path = os.path.join(MP3_DIR, f"{base_name}_news.mp3")
-    conv_mp3_path = os.path.join(MP3_DIR, f"{base_name}_conv.mp3")
+    jp_en_csv = os.path.join(ANKI_DIR, f"{base_name}_jp_en.csv")
+    en_jp_csv = os.path.join(ANKI_DIR, f"{base_name}_en_jp.csv")
 
     # Skip if all files already exist
     if os.path.exists(json_path):
@@ -68,7 +72,8 @@ def process_news_item(item, date, api_key) -> dict:
         text = extract_article_text(news_id)
         convo_text = construct_conversation(text, api_key)
         synthesize_mp3(text, news_mp3_path, api_key)
-        synthesize_mp3(convo_text, conv_mp3_path, api_key)
+
+        generate_anki_from_text(text, api_key, )
         article_data = {
             'base_name': base_name,
             "title": title,
@@ -76,8 +81,9 @@ def process_news_item(item, date, api_key) -> dict:
             "date": date,
             "url": f"{BASE_URL}/{news_id}/{news_id}.html",
             "text": text,
-            "convo_text": text,
+            "convo_text": convo_text,
         }
+        
         # Save JSON
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(article_data, f, ensure_ascii=False, indent=2)
@@ -113,8 +119,7 @@ def crawl(api_key):
                 break
         if len(json_data_list) >= MAX_ARTICLES:
             break
-    generate_index(json_data_list)
-    generate_latest_json(json_data_list)
+    generate_to_public(json_data_list)
     print("✅ Finished generating index and latest.json")
 
 def run_crawler():

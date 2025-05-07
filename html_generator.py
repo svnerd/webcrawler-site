@@ -1,4 +1,7 @@
-def generate_news_convo_html(news_text, convo_text, news_mp3, convo_mp3, output_path):
+def generate_news_convo_html(
+        news_text, convo_text, 
+        news_mp3, convo_mp3, 
+        output_path):
     news_html = news_text.replace("\n", "<br>")
     convo_html = convo_text.replace("\n", "<br>")
 
@@ -71,12 +74,13 @@ def generate_news_convo_html(news_text, convo_text, news_mp3, convo_mp3, output_
 
 
 def generate_news_convo_html_mobile_friendly(
-        news_text, convo_text, news_mp3, convo_mp3,
+        news_text, convo_text, news_mp3, 
+        anki_csv_jp_en, anki_csv_en_jp,
         output_path, top_link=None):
     news_html = news_text.replace("\n", "<br>")
     convo_html = convo_text.replace("\n", "<br>")
 
-    top_link_html = f'<a href="{top_link}" class="top-link">🔗 Back to Index</a>' if top_link else ""
+    top_link_html = f'<a href="{top_link}" class="top-link">🔗 NHK Easy News Original Link </a>' if top_link else ""
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -149,13 +153,15 @@ def generate_news_convo_html_mobile_friendly(
         </div>
 
         <div class="section">
+        <h1>Download your Anki CSV files:</h1>
+        <ul>
+            <li><a href=f"/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
+            <li><a href=f"/anki/{anki_csv_en_jp}" download>Download English → Japanese (CSV)</a></li>
+        </ul>
+
+        <div class="section">
             <h1>💬 会話</h1>
             <p>{convo_html}</p>
-            <span>🔊 会話音声を聞く</span>
-            <audio controls>
-                <source src="/mp3/{convo_mp3}" type="audio/mpeg">
-                <a class="audio-link" href="/mp3/{convo_mp3}" target="_blank">🔊 会話音声を聞く (MP3)</a>
-            </audio>
         </div>
     </div>
 </body>
