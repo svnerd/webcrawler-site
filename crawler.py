@@ -9,7 +9,7 @@ from const import (
     BASE_URL, NEWS_LIST_URL, JSON_DIR, MP3_DIR, 
     PAGE_DIR, MAX_ARTICLES, ANKI_DIR
 )
-from generator import generate_index, generate_latest_json
+from generator import generate_to_public
 from openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
 
 
