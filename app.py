@@ -1,5 +1,5 @@
 from flask import Flask, send_from_directory
-from const import PAGE_DIR, MP3_DIR, LATEST_DIR
+from const import PAGE_DIR, MP3_DIR, LATEST_DIR, ANKI_DIR
 from crawler import run_crawler
 
 import threading
@@ -25,6 +25,11 @@ def serve_pages(filename):
 @app.route("/mp3/<path:filename>")
 def serve_mp3(filename):
     return send_from_directory(MP3_DIR, filename)
+
+@app.route("/anki/<path:filename>")
+def serve_anki(filename):
+    return send_from_directory(ANKI_DIR, filename)
+
 
 @app.route("/api/latest.json")
 def serve_latest_json():
