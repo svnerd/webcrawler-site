@@ -22,7 +22,7 @@ def generate_html_from_json(json_data):
         f"{base_name}_news.mp3",
         anki_csv_jp_en, anki_csv_en_jp,
         output_path=html_path, top_link=news_link)
-    return html_path
+    return html_base_name
 
 def generate_latest_json(json_data_list):
     """
