@@ -155,8 +155,8 @@ def generate_news_convo_html_mobile_friendly(
         <div class="section">
         <h1>Download your Anki CSV files:</h1>
         <ul>
-            <li><a href=f"/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
-            <li><a href=f"/anki/{anki_csv_en_jp}" download>Download English → Japanese (CSV)</a></li>
+            <li><a href="/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
+            <li><a href="/anki/{anki_csv_en_jp}" download>Download English → Japanese (CSV)</a></li>
         </ul>
 
         <div class="section">
