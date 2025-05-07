@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from const import (
     BASE_URL, NEWS_LIST_URL, JSON_DIR, MP3_DIR, 
-    PAGE_DIR, MAX_ARTICLES, ANKI_DIR
+    PAGE_DIR, MAX_ARTICLES, ANKI_DIR, LATEST_DIR
 )
 from generator import generate_to_public
 from openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
@@ -17,7 +17,7 @@ def setup_directories():
     """
     Ensure necessary directories exist.
     """
-    for directory in [JSON_DIR, MP3_DIR, PAGE_DIR]:
+    for directory in [JSON_DIR, MP3_DIR, PAGE_DIR, LATEST_DIR, ANKI_DIR]:
         os.makedirs(directory, exist_ok=True)
 
 def extract_article_text(news_id):
