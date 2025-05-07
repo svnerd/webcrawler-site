@@ -9,7 +9,8 @@ import shutil
 
 def generate_html_from_json(json_data):
     base_name = json_data["base_name"]
-    html_path = os.path.join(PAGE_DIR, f"{base_name}.html")
+    html_base_name = f"{base_name}.html"
+    html_path = os.path.join(PAGE_DIR, html_base_name)
     text = json_data["text"]
     convo_text = json_data["convo_text"]
     news_link = json_data["url"]
@@ -55,4 +56,6 @@ def generate_to_public(json_data_list):
     # generate api related files. e.g. latest.json, latest.html
     generate_latest_json(json_data_list)
     if len(html_files) > 0:
-        shutil.copy(html_files[0], os.path.join(LATEST_DIR, "latest.html"))
+        shutil.copy(
+            os.path.join(PAGE_DIR, html_files[0]),
+            os.path.join(LATEST_DIR, "latest.html"))
