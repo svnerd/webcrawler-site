@@ -21,13 +21,14 @@ def generate_html_from_json(json_data):
     jp_en_csv = f"{base_name}_jp_en.csv"
     en_jp_html = f"{base_name}_vocab_en_jp.html"
     jp_en_html = f"{base_name}_vocab_jp_en.html"
+    conv_anki_html = f"{base_name}_convo.html"
 
     # Save HTML
     generate_news_convo_html_mobile_friendly(
         # text related
         text, news_mp3_path,
         # conversation related
-        convo_text, json_data["conv_anki_html_path"],
+        convo_text, conv_anki_html,
         # anki related  
         en_jp_csv, jp_en_csv,
         en_jp_html, jp_en_html, 
