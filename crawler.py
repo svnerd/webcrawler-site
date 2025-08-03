@@ -10,9 +10,9 @@ from const import (
     PAGE_DIR, MAX_ARTICLES, ANKI_DIR, LATEST_DIR
 )
 from generator import generate_to_public
-from openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
-from conv_anki import build_anki_conversation_cards
-from conv_anki_html import write_anki_conversation_html, write_anki_vocab_html
+from tools.openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
+from tools.conv_anki import build_anki_conversation_cards
+from html_gen.html_anki import write_anki_conversation_html, write_anki_vocab_html
 
 
 def setup_directories():

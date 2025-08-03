@@ -1,7 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from const import PAGE_DIR
 import os
-from html_generator import generate_news_convo_html_mobile_friendly
+from html_gen.html_generator import generate_news_convo_html_mobile_friendly
 from const import PAGE_DIR, LATEST_DIR
 import json
 import shutil

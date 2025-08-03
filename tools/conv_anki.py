@@ -1,5 +1,4 @@
 import os
-import uuid
 from openai_generator import synthesize_mp3, get_hiragana_english
 import pandas as pd
 
