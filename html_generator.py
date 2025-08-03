@@ -93,16 +93,21 @@ def generate_news_convo_html_mobile_friendly(
         <h1>Download your Anki CSV files:</h1>
         <ul>
             <li><a href="/anki/{anki_csv_en_jp}" download>Download English → Japanese (CSV)</a></li>
-            <li><a href="/anki/{anki_en_jp_html}" target="_blank"> English → Japanese Anki </a></li>
             <li><a href="/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
-            <li><a href="/pages/{anki_jp_en_html}" target="_blank"> Japanese → English Anki </a></li>
         </ul>
 
+        <div class="section">
+        <h1> Recite online using Anki HTML:</h1>
+        <ul>
+            <li><a href="/pages/{anki_en_jp_html}"> English → Japanese Anki </a></li>
+            <li><a href="/pages/{anki_jp_en_html}"> Japanese → English Anki </a></li>
+        </ul>
+       
         <div class="section">
             <h1>💬 会話</h1>
             <p>{convo_html}</p>
             <ul>
-                <li><a href="/pages/{convo_anki_html_path}" target="_blank">Conversation Anki Cards</a></li>
+                <li><a href="/pages/{convo_anki_html_path}">Conversation Anki Cards</a></li>
             </ul>
         </div>
     </div>
