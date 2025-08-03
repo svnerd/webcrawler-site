@@ -1,125 +1,8 @@
-import pandas as pd
-
-def generate_flashcards_html(df: pd.DataFrame, output_path: str):
-    """
-    Generate a mobile-friendly HTML flashcard viewer from a DataFrame with 'Front' and 'Back' columns.
-
-    Args:
-        df (pd.DataFrame): A DataFrame with 'Front' and 'Back' columns.
-        output_path (str): The path to write the generated HTML file to.
-    """
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anki-style Flashcards (EN → JP)</title>
-  <style>
-    body {{
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      background: #f8f8f8;
-    }}
-    .card-wrapper {{
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      margin: 15px;
-      width: 100%;
-      max-width: 600px;
-    }}
-    .toggle-button {{
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      padding: 10px 5px;
-      font-size: 12px;
-      cursor: pointer;
-      width: 30px;
-      border: 1px solid #ccc;
-      border-radius: 5px 0 0 5px;
-      background-color: #eee;
-      flex-shrink: 0;
-    }}
-    .card {{
-      flex-grow: 1;
-      padding: 15px 20px;
-      border: 1px solid #ccc;
-      border-radius: 0 10px 10px 0;
-      background: white;
-      text-align: left;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      min-height: 120px;
-    }}
-    .front {{
-      font-size: 16px;
-    }}
-    .back {{
-      display: none;
-      margin-top: 10px;
-      color: darkgreen;
-    }}
-    @media (max-width: 480px) {{
-      .card-wrapper {{
-        flex-direction: column;
-        max-width: 100%;
-      }}
-      .toggle-button {{
-        writing-mode: horizontal-tb;
-        transform: none;
-        width: 100%;
-        border-radius: 5px 5px 0 0;
-      }}
-      .card {{
-        border-radius: 0 0 10px 10px;
-      }}
-    }}
-  </style>
-  <script>
-    function toggleAnswer(id) {{
-      const back = document.getElementById("back-" + id);
-      if (back.style.display === "block") {{
-        back.style.display = "none";
-      }} else {{
-        back.style.display = "block";
-      }}
-    }}
-  </script>
-</head>
-<body>
-<h2>English → Japanese Flashcards</h2>
-<div id="cards-container">
-''')
-
-        for i, row in df.iterrows():
-            front = row['Front']
-            back = row['Back']
-            f.write(f'''
-  <div class="card-wrapper">
-    <button class="toggle-button" onclick="toggleAnswer('{i}')">Show<br>Hide</button>
-    <div class="card" id="card-{i}">
-      <div class="front">{front}</div>
-      <div class="back" id="back-{i}">{back}</div>
-    </div>
-  </div>
-''')
-
-        f.write('''
-</div>
-</body>
-</html>
-''')
-
-    print(f"✅ Flashcards saved to {output_path}")
-
 
 def generate_news_convo_html_mobile_friendly(
-        news_text, convo_text, news_mp3, 
-        anki_csv_jp_en, anki_csv_en_jp,
+        news_text, news_mp3, 
+        convo_text, convo_anki_html_path, 
+        anki_csv_en_jp, anki_csv_jp_en, anki_en_jp_html, anki_jp_en_html,
         output_path, top_link=None):
     news_html = news_text.replace("\n", "<br>")
     convo_html = convo_text.replace("\n", "<br>")
@@ -209,13 +92,18 @@ def generate_news_convo_html_mobile_friendly(
         <div class="section">
         <h1>Download your Anki CSV files:</h1>
         <ul>
-            <li><a href="/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
             <li><a href="/anki/{anki_csv_en_jp}" download>Download English → Japanese (CSV)</a></li>
+            <li><a href="/anki/{anki_en_jp_html}" target="_blank"> English → Japanese Anki </a></li>
+            <li><a href="/anki/{anki_csv_jp_en}" download>Download Japanese → English (CSV)</a></li>
+            <li><a href="/pages/{anki_jp_en_html}" target="_blank"> Japanese → English Anki </a></li>
         </ul>
 
         <div class="section">
             <h1>💬 会話</h1>
             <p>{convo_html}</p>
+            <ul>
+                <li><a href="/pages/{convo_anki_html_path}" target="_blank">Conversation Anki Cards</a></li>
+            </ul>
         </div>
     </div>
 </body>

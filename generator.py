@@ -14,11 +14,23 @@ def generate_html_from_json(json_data):
     text = json_data["text"]
     convo_text = json_data["convo_text"]
     news_link = json_data["url"]
+
+    # file names. 
+    news_mp3_path = f"{base_name}_news.mp3"
+    en_jp_csv = f"{base_name}_en_jp.csv"
+    jp_en_csv = f"{base_name}_jp_en.csv"
+    en_jp_html = f"{base_name}_vocab_en_jp.html"
+    jp_en_html = f"{base_name}_vocab_jp_en.html"
+
     # Save HTML
     generate_news_convo_html_mobile_friendly(
-        text, convo_text, 
-        f"{base_name}_news.mp3",
-        f"{base_name}_jp_en.csv", f"{base_name}_en_jp.csv",
+        # text related
+        text, news_mp3_path,
+        # conversation related
+        convo_text, json_data["conv_anki_html_path"],
+        # anki related  
+        en_jp_csv, jp_en_csv,
+        en_jp_html, jp_en_html, 
         output_path=html_path, top_link=news_link)
     return html_base_name
 

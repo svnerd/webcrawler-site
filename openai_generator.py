@@ -2,8 +2,35 @@ import os
 import openai
 import csv
 
+def get_hiragana_english(line, api_key):
+    # Step 3: Get Hiragana + English via GPT
+    annotate_prompt = f"""
+    以下の日本語の文章を「ひらがな」＋「英語訳」にしてください。フォーマットはこのようにしてください：
+    Hiragana: ...
+    English: ...
 
-def synthesize_mp3(text, path, api_key):
+    日本語: {line}
+    """
+    try:
+        client = openai.OpenAI(api_key=api_key)
+
+        chat = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": annotate_prompt}]
+        ).choices[0].message.content
+
+        # Parse result
+        hiragana = english = ""
+        for l in chat.strip().splitlines():
+            if l.lower().startswith("hiragana:"):
+                hiragana = l.split(":", 1)[1].strip()
+            elif l.lower().startswith("english:"):
+                english = l.split(":", 1)[1].strip()
+    except Exception as e:
+        raise RuntimeError(f"Failed to transcribe: {e}")
+    return hiragana, english
+
+def synthesize_mp3(text, path, api_key, voice="echo"):
     """
     Synthesize MP3 using OpenAI API.
     """
@@ -11,7 +38,7 @@ def synthesize_mp3(text, path, api_key):
         client = openai.OpenAI(api_key=api_key)
         response = client.audio.speech.create(
             model="tts-1",
-            voice="echo",
+            voice=voice,
             input=text
         )
         with open(path, "wb") as f:

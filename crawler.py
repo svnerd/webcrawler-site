@@ -11,6 +11,8 @@ from const import (
 )
 from generator import generate_to_public
 from openai_generator import synthesize_mp3, construct_conversation, generate_anki_from_text
+from conv_anki import build_anki_conversation_cards
+from conv_anki_html import write_anki_conversation_html, write_anki_vocab_html
 
 
 def setup_directories():
@@ -46,7 +48,6 @@ def extract_article_text(news_id):
     article_text = '\n'.join([para.get_text(strip=True) for para in paragraphs])
     return article_text
 
-
 def process_news_item(item, date, api_key) -> dict:
     """
     Process a single news item.
@@ -56,10 +57,14 @@ def process_news_item(item, date, api_key) -> dict:
     date_str = datetime.strptime(date, "%Y-%m-%d").strftime("%Y%m%d")
     base_name = f"{date_str}_{news_id}"
 
+    # note that the name construction need to be the same as in generator.py
     json_path = os.path.join(JSON_DIR, f"{base_name}.json")
     news_mp3_path = os.path.join(MP3_DIR, f"{base_name}_news.mp3")
     jp_en_csv = os.path.join(ANKI_DIR, f"{base_name}_jp_en.csv")
     en_jp_csv = os.path.join(ANKI_DIR, f"{base_name}_en_jp.csv")
+    jp_en_html = os.path.join(PAGE_DIR, f"{base_name}_vocab_jp_en.html")
+    en_jp_html = os.path.join(PAGE_DIR, f"{base_name}_vocab_en_jp.html")
+    conv_anki_html_path = os.path.join(PAGE_DIR, f"{base_name}_convo.html")
 
     # Skip if all files already exist
     if os.path.exists(json_path):
@@ -72,8 +77,13 @@ def process_news_item(item, date, api_key) -> dict:
         text = extract_article_text(news_id)
         convo_text = construct_conversation(text, api_key)
         synthesize_mp3(text, news_mp3_path, api_key)
-
+        conv_df = build_anki_conversation_cards(
+            convo_text, api_key,
+            mp3_dir=MP3_DIR, mp3_base_name=f"{base_name}_convo")
+        write_anki_conversation_html(conv_df, conv_anki_html_path)
         generate_anki_from_text(text, api_key, jp_en_csv, en_jp_csv)
+        write_anki_vocab_html(jp_en_csv, jp_en_html)
+        write_anki_vocab_html(en_jp_csv, en_jp_html)
         article_data = {
             'base_name': base_name,
             "title": title,
@@ -82,8 +92,6 @@ def process_news_item(item, date, api_key) -> dict:
             "url": f"{BASE_URL}/{news_id}/{news_id}.html",
             "text": text,
             "convo_text": convo_text,
-            'jp_en_csv': jp_en_csv,
-            'en_jp_csv': en_jp_csv,
         }
         
         # Save JSON
