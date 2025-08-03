@@ -1,5 +1,5 @@
 import os
-from openai_generator import synthesize_mp3, get_hiragana_english
+from tools.openai_generator import synthesize_mp3, get_hiragana_english
 import pandas as pd
 
 
